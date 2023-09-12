@@ -1,23 +1,23 @@
 {
     "taskDefinitionArn": "arn:aws:ecs:us-east-2:893688252992:task-definition/app-first-task",
     "containerDefinitions": [
-        {
-            "name": "app-first-task",
-            "image": "893688252992.dkr.ecr.us-east-2.amazonaws.com/app-repo",
-            "cpu": 256,
-            "memory": 512,
-            "portMappings": [
-                {
-                    "containerPort": 80,
-                    "hostPort": 80,
-                    "protocol": "tcp"
-                }
-            ],
-            "essential": true,
-            "environment": [],
-            "mountPoints": [],
-            "volumesFrom": []
-        }
+      {
+        "name": "app-first-task",
+        "image": "893688252992.dkr.ecr.us-east-2.amazonaws.com/app-repo",
+        "cpu": 256,    
+        "memory": 512, 
+        "portMappings": [
+          {
+            "containerPort": 80,
+            "hostPort": 80,
+            "protocol": "tcp"
+          }
+        ],
+        "essential": true,
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": []
+      }
     ],
     "family": "app-first-task",
     "executionRoleArn": "arn:aws:iam::893688252992:role/ecsTaskExecutionRole",
@@ -25,30 +25,29 @@
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.ecr-auth"
-        },
-        {
-            "name": "ecs.capability.execution-role-ecr-pull"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        }
+      {
+        "name": "com.amazonaws.ecs.capability.ecr-auth"
+      },
+      {
+        "name": "ecs.capability.execution-role-ecr-pull"
+      },
+      {
+        "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+      },
+      {
+        "name": "ecs.capability.task-eni"
+      }
     ],
     "placementConstraints": [],
     "compatibilities": [
-        "EC2",
-        "FARGATE"
+      "EC2",
+      "FARGATE"
     ],
     "requiresCompatibilities": [
-        "FARGATE"
+      "FARGATE"
     ],
-    "cpu": "256",
-    "memory": "512",
     "registeredAt": "2023-09-12T03:32:43.494Z",
     "registeredBy": "arn:aws:iam::893688252992:user/itadmin",
     "tags": []
-}
+  }
+  
