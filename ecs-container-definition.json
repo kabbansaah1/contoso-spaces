@@ -1,7 +1,7 @@
   [
     {
       "name": "app-first-task",
-      "image": "${aws_ecr_repository.app_ecr_repo.repository_url}",
+      "image": "893688252992.dkr.ecr.us-east-2.amazonaws.com/app-repo",
       "essential": true,
       "portMappings": [
         {
