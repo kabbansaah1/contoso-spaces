@@ -1,0 +1,54 @@
+name: AWS ECS Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2  # Replace with your desired AWS region
+
+      - name: Build and push Docker image
+        run: |
+          # Log in to Amazon ECR
+          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com
+
+          # Build and tag your Docker image
+          docker build -t app-repo:latest .
+
+          # Tag the image with the ECR repository URI
+          docker tag app-repo:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/app-repo:latest
+
+          # Push the image to ECR
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/app-repo:latest
+
+      - name: Update ECS task definition
+        run: |
+          # Create a new revision for the ECS task definition
+          aws ecs register-task-definition \
+            --region us-east-2 \
+            --family app-first-task \
+            --container-definitions "$(cat ecs-container-definition.json)"
+
+          # Update the ECS service with the new task definition
+          aws ecs update-service \
+            --region us-east-2 \
+            --cluster app-cluster \
+            --service app-first-service \
+            --task-definition app-first-task:1  # Use the correct revision number
+
+# Create ecs-container-definition.json in your repository with your container definition
+# Replace <your-repo-name> and <your-account-id> with your actual values
+# Configure your AWS access key and secret key as secrets in your GitHub repository
