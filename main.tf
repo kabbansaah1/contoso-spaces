@@ -33,7 +33,7 @@ resource "aws_ecs_task_definition" "app_task" {
   [
     {
       "name": "app-first-task",
-      "image": "${aws_ecr_repository.app_ecr_repo.repository_url}",
+      "image": "aws_ecr_repository.app_ecr_repo.repository_url:latest",
       "essential": true,
       "portMappings": [
         {

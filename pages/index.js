@@ -13,7 +13,7 @@ const Index = ({ locationGroups }) =>
             <div className="card bg-dark">
                 <div className="card-body">
                     <h5 className="card-title display-4 text-center">
-                        Featured Locations
+                        Featured Locations!!!
                     </h5>
                 </div>
             </div> 
