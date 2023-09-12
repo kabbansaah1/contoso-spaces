@@ -47,7 +47,7 @@ jobs:
             --region us-east-2 \
             --cluster app-cluster \
             --service app-first-service \
-            --task-definition app-first-task:1  # Use the correct revision number
+            --task-definition app-first-task  
 
 # Create ecs-container-definition.json in your repository with your container definition
 # Replace <your-repo-name> and <your-account-id> with your actual values
