@@ -18,33 +18,33 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-2  # Replace with your desired AWS region
+          aws-region: us-west-2  # Replace with your desired AWS region
 
       - name: Build and push Docker image
         run: |
           # Log in to Amazon ECR
-          aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com
+          aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com
 
           # Build and tag your Docker image
           docker build -t app-repo:latest .
 
           # Tag the image with the ECR repository URI
-          docker tag app-repo:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/app-repo:latest
+          docker tag app-repo:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/app-repo:latest
 
           # Push the image to ECR
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/app-repo:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-west-2.amazonaws.com/app-repo:latest
 
       - name: Update ECS task definition
         run: |
           # Create a new revision for the ECS task definition
           aws ecs register-task-definition \
-            --region us-east-2 \
+            --region us-west-2 \
             --family app-first-task \
             --container-definitions "$(cat ecs-container-definition.json)"
 
           # Update the ECS service with the new task definition
           aws ecs update-service \
-            --region us-east-2 \
+            --region us-west-2 \
             --cluster app-cluster \
             --service app-first-service \
             --task-definition app-first-task:3  
