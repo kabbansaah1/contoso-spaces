@@ -1,0 +1,31 @@
+"containerDefinitions": [
+    {
+        "name": "app-first-task",
+        "image": "893688252992.dkr.ecr.us-west-2.amazonaws.com/app-first-task",
+        "cpu": 256,
+        "memory": 512,
+        "portMappings": [
+            {
+                "containerPort": 3000,
+                "hostPort": 3000,
+                "protocol": "tcp"
+            }
+        ],
+        "essential": true,
+        "environment": [],
+        "mountPoints": [],
+        "volumesFrom": []
+    }
+],
+"family": "app-first-task",
+"executionRoleArn": "arn:aws:iam::893688252992:role/ecsTaskExecutionRole2",
+"networkMode": "awsvpc",
+"volumes": [],
+"placementConstraints": [],
+"requiresCompatibilities": [
+    "FARGATE"
+],
+"cpu": "256",
+"memory": "512",
+"tags": []
+}
