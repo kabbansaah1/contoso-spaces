@@ -113,6 +113,13 @@ resource "aws_security_group" "load_balancer_security_group" {
     cidr_blocks = ["0.0.0.0/0"] # Allow traffic in from all sources
   }
 
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow traffic in from all sources
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -128,15 +135,49 @@ resource "aws_lb_target_group" "target_group" {
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" # default VPC
+
+  health_check {
+    healthy_threshold   = 5
+    interval            = 30
+    matcher             = "200,301,302"
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = 5
+    unhealthy_threshold = 2
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = "${aws_alb.application_load_balancer.arn}" #  load balancer
-  port              = "80"
+  port              = 80
   protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = 443
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "alb_https_listener" {
+  load_balancer_arn  = "${aws_alb.application_load_balancer.arn}"
+  port               = 443
+  protocol           = "HTTPS"
+  ssl_policy         = "ELBSecurityPolicy-2016-08"
+  certificate_arn    = "arn:aws:acm:us-east-2:893688252992:certificate/971e8c90-e118-4761-abb5-4aeaa8a2f619"
+
   default_action {
     type             = "forward"
-    target_group_arn = "${aws_lb_target_group.target_group.arn}" # target group
+    target_group_arn = "${aws_lb_target_group.target_group.arn}"
   }
 }
 
