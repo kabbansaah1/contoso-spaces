@@ -50,12 +50,12 @@ resource "aws_ecs_task_definition" "app_task" {
   network_mode             = "awsvpc"    # add the AWS VPN network mode as this is required for Fargate
   memory                   = 512         
   cpu                      = 256         
-  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole.arn}"
+  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole2.arn}"
 }
 
 # main.tf
-resource "aws_iam_role" "ecsTaskExecutionRole" {
-  name               = "ecsTaskExecutionRole"
+resource "aws_iam_role" "ecsTaskExecutionRole2" {
+  name               = "ecsTaskExecutionRole2"
   assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
 }
 
@@ -71,7 +71,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
-  role       = "${aws_iam_role.ecsTaskExecutionRole.name}"
+  role       = "${aws_iam_role.ecsTaskExecutionRole2.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
@@ -123,7 +123,7 @@ resource "aws_security_group" "load_balancer_security_group" {
 
 # main.tf
 resource "aws_lb_target_group" "target_group" {
-  name        = "target-group"
+  name        = "lb-target-group"
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
