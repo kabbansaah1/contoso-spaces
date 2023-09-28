@@ -1,8 +1,8 @@
 {
     "containerDefinitions": [
         {
-            "name": "fsl-demo",
-            "image": "893688252992.dkr.ecr.us-east-2.amazonaws.com/fsl-demo",
+            "name": "my-first-task",
+            "image": "893688252992.dkr.ecr.us-east-2.amazonaws.com/my-first-ecr-repo",
             "cpu": 256,
             "memory": 512,
             "portMappings": [
@@ -18,7 +18,7 @@
             "volumesFrom": []
         }
     ],
-    "family": "fsl-demo",
+    "family": "my-first-task",
     "executionRoleArn": "arn:aws:iam::893688252992:role/ecsTaskExecutionRole-Aprod",
     "networkMode": "awsvpc",
     "volumes": [],
